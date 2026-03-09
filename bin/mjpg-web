@@ -93,6 +93,8 @@ HTML = """<!DOCTYPE html>
         <input type="range" id="zoom" min="100" max="500" value="100" step="10" oninput="sliderUpdate('zoom',this.value)" onchange="cmd('zoom '+this.value)">
         <span class="val" id="zoom-val">100</span>
       </div>
+      <h3>Focus</h3>
+      <div><button class="btn" onclick="cmd('focus')">Refocus</button></div>
     </div>
   </div>
 </div>
